@@ -10,7 +10,7 @@ on:
 jobs:
   terraform:
     name: teraformInit
-    runs-on: SHIVIN
+    runs-on: self-hosted
     steps:
     -  name: Dhondhu mahraj
        run: echo Dhondhu mahraj
