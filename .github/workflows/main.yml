@@ -7,10 +7,10 @@ on:
       - 'releases/**'
       - 'feature/**'
 
-Jobs:
+jobs:
   terraform:
     name: teraformInit
     runs-on: SHIVIN
     steps:
     -  name: Dhondhu mahraj
-      run: echo Dhondhu mahraj
+       run: echo Dhondhu mahraj
