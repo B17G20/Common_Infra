@@ -1,11 +1,11 @@
 name: "Infra-deployment"
 
-on:
-  push:
-    branches:
-      - 'main'
-      - 'releases/**'
-      - 'feature/**'
+# on:
+#    push: none
+#   #   branches:
+#   #     - 'main'
+#   #     - 'releases/**'
+#   #     - 'feature/**'
 
 jobs:
   terraform:
