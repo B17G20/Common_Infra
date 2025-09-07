@@ -74,5 +74,3 @@ jobs:
         run: terraform apply --auto-approve
         continue-on-error: true
         working-directory: environments/dev              
-          
-
