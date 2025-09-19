@@ -1,11 +1,29 @@
 name: "Infra-deployment"
+run-name: Infra-deployment of ${{ inputs.deploy_target }} by @${{ github.actor }}
 
 on:
-   push: none
-  #   branches:
-  #     - 'main'
-  #     - 'releases/**'
-  #     - 'feature/**'
+  workflow_dispatch:
+    inputs:
+      Branch:
+        description: 'Which branch to deploy?'
+        required: true
+        default: 'main'
+        type: choice
+        options:
+          - main
+          - develop
+          - feature-branch
+          - release
+
+      Env:
+        description: 'Select environment to deploy to'
+        required: true
+        type: choice
+        options:
+          - prod
+          - stage
+          - dev
+
 
 jobs:
   terraform:
