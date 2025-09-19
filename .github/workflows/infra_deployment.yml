@@ -1,5 +1,5 @@
 name: "Infra-deployment"
-run-name: Infra-deployment of ${{ inputs.deploy_target }} by @${{ github.actor }}
+run-name: Infra-deployment of ${{ inputs.Branch }} by @${{ github.actor }}
 
 on:
   workflow_dispatch:
