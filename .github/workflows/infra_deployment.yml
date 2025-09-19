@@ -1,33 +1,69 @@
 name: "Infra-deployment"
-run-name: Infra-deployment of ${{ inputs.Branch }} by @${{ github.actor }}
+run-name: Infra-deployment of ${{ inputs.Branches }} by @${{ github.actor }}
 
 on:
-  workflow_dispatch:
-    inputs:
-      Branch:
-        description: 'Which branch to deploy?'
-        required: true
-        default: 'main'
-        type: choice
-        options:
-          - main
-          - feature
-  
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
 
-      Env:
-        description: 'Select environment to deploy to'
-        required: true
-        type: choice
-        options:
-          - prod
-          - stage
-          - dev
+  # workflow_dispatch:
+  #   inputs:
+  #     Branch:
+  #       description: 'Which branch to deploy?'
+  #       required: true
+  #       default: 'main'
+  #       type: choice
+  #       options:
+  #         - main
+  #         - feature
+  #     Env:
+  #       description: 'Select environment to deploy to'
+  #       required: true
+  #       type: choice
+  #       options:
+  #         - prod
+  #         - stage
+  #         - dev
+permissions:
+  contents: read       # Needed to checkout the code from the repo
+  packages: none       # Explicitly block access to GitHub Packages
+  id-token: write      # Only if using OIDC for cloud credentials (e.g., AWS/GCP)
+
 
 
 jobs:
-  terraform:
-    name: teraformInit
+  Terraform_Init_Plan:
     runs-on: self-hosted
     steps:
-    -  name: Dhondhu mahraj
-       run: echo Dhondhu mahraj
+      # Step 1: Checkout the code
+      - name: Checkout repository
+        uses: actions/checkout@v3.5.0
+
+      # Step 2: Log in to Azure using OIDC
+      - name: Azure Login via OIDC
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      # Step 3: Set up Terraform
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
+
+      # Step 4: Terraform Format Check
+      - name: Terraform Format
+        run: terraform fmt -check -recursive
+
+      # Step 5: Terraform Init
+      - name: Terraform Init
+        run: terraform init
+
+      # Step 6: Terraform Plan
+      - name: Terraform Plan
+        run: terraform plan
