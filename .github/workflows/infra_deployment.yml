@@ -11,9 +11,8 @@ on:
         type: choice
         options:
           - main
-          - develop
-          - feature-branch
-          - release
+          - feature
+  
 
       Env:
         description: 'Select environment to deploy to'
